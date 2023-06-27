@@ -12,7 +12,7 @@ const renderMessage = (content, sender) => {
 }
 
 // Append a chat message to the chat container
-const appendMessage = (message, sender) => {
+const appendMessage = (message, sender, isLoadingFromHistory = false) => {
   const bubbleDiv = createElement('div', `chat chat-${sender === 'ai' ? 'start' : 'end'} relative`, domElements.chatContainer)
 
   // Add image
@@ -33,9 +33,10 @@ const appendMessage = (message, sender) => {
   const textDiv = createElement('div', `chat-bubble ${sender === 'ai' ? 'chat-bubble-secondary' : 'chat-bubble-primary'}`, bubbleDiv);
   textDiv.textContent = message;
 
-  if (sender === 'ai') {
+  if (sender === 'ai' && !isLoadingFromHistory) {
     addLoadingAnimation(avatarDiv);
   }
+
 
   // Add footer
   const footerDiv = createElement('div', 'chat-footer pt-2 opacity-50', bubbleDiv)

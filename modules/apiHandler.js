@@ -172,5 +172,6 @@ module.exports = {
   getSettings,
   fetchApi,
   processAPIResponse,
-  sendMessageToAPI
+  sendMessageToAPI,
+  getChatHistory
 }

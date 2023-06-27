@@ -13,6 +13,20 @@ const { getSettings, fetchApi, processAPIResponse, sendMessageToAPI } = require(
 let messages = []
 let controller = null
 
+// Retrieve and render chat history
+retrieveAndRenderChatHistory();
+
+async function retrieveAndRenderChatHistory() {
+  const { getChatHistory } = require('./modules/apiHandler');
+  const chatHistory = await getChatHistory();
+  chatHistory.forEach(message => {
+    const { role, content } = message;
+    renderMessage(content, role === 'assistant' ? 'ai' : 'user', true);
+  });
+}
+
+
+
 // Event listeners
 domElements.promptInput.addEventListener('keyup', event => { if (event.key === 'Enter') { generate() } })
 domElements.generateBtn.addEventListener('click', generate)
