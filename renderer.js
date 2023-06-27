@@ -25,8 +25,6 @@ async function retrieveAndRenderChatHistory() {
   });
 }
 
-
-
 // Event listeners
 domElements.promptInput.addEventListener('keyup', event => { if (event.key === 'Enter') { generate() } })
 domElements.generateBtn.addEventListener('click', generate)

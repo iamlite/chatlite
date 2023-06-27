@@ -4,12 +4,13 @@ const domElements = require('./domElements')
 const { createElement, handleError,addLoadingAnimation,removeLoadingAnimation } = require('./helperFunctions')
 
 // Render a message in the chat container
-const renderMessage = (content, sender) => {
-  const messageDiv = appendMessage(content, sender)
+const renderMessage = (content, sender, isLoadingFromHistory = false) => {
+  const messageDiv = appendMessage(content, sender, isLoadingFromHistory)
   messageDiv.classList.add('fade-in')
   domElements.chatContainer.appendChild(messageDiv)
   domElements.chatContainer.scrollTop = domElements.chatContainer.scrollHeight
 }
+
 
 // Append a chat message to the chat container
 const appendMessage = (message, sender, isLoadingFromHistory = false) => {
