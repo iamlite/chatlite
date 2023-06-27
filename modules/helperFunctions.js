@@ -45,9 +45,10 @@ const populateSettingsFields = (settings) => {
 
 
 const addLoadingAnimation = (avatarDiv) => {
-  createElement('span', 'loading loading-ring loading-lg absolute inset-0 flex items-center justify-center', avatarDiv);
+  const loadingElement = createElement('span', 'loading loading-infinity loading-md fade-in', avatarDiv);
   console.log('Loading animation added');
 }
+
 
 const removeLoadingAnimation = (avatarDiv) => {
   const loadingSpan = avatarDiv.querySelector('.loading');
