@@ -32,14 +32,8 @@ const appendMessage = (message, sender) => {
 
   // Add chat bubble
   const textDiv = createElement('div', `chat-bubble ${sender === 'ai' ? 'chat-bubble-secondary' : 'chat-bubble-primary'}`, bubbleDiv)
-  
-  // If sender is AI, add a loading ring in the chat bubble
-  if (sender === 'ai') {
-    const loadingDiv = createElement('span', 'loading loading-ring loading-lg', textDiv);
-  } else {
-    textDiv.textContent = message;
-  }
-  
+  textDiv.textContent = message
+
   // Add footer
   const footerDiv = createElement('div', 'chat-footer pt-2 opacity-50', bubbleDiv)
   if (sender === 'ai') {
