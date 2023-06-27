@@ -44,16 +44,16 @@ const populateSettingsFields = (settings) => {
 };
 
 
-const addLoadingAnimation = (bubbleDiv) => {
-  const loadingSpan = createElement('span', 'loading loading-ring loading-lg', bubbleDiv);
-  bubbleDiv.appendChild(loadingSpan);
+const addLoadingAnimation = (avatarDiv) => {
+  createElement('span', 'loading loading-ring loading-lg absolute inset-0 flex items-center justify-center', avatarDiv);
+  console.log('Loading animation added');
 }
 
-
-const removeLoadingAnimation = (bubbleDiv) => {
-  const loadingSpan = bubbleDiv.querySelector('.loading');
+const removeLoadingAnimation = (avatarDiv) => {
+  const loadingSpan = avatarDiv.querySelector('.loading');
   if (loadingSpan) {
-    bubbleDiv.removeChild(loadingSpan);
+    avatarDiv.removeChild(loadingSpan);
+    console.log('Loading animation removed');
   }
 }
 

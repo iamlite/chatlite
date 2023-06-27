@@ -16,7 +16,7 @@ const appendMessage = (message, sender) => {
   const bubbleDiv = createElement('div', `chat chat-${sender === 'ai' ? 'start' : 'end'} relative`, domElements.chatContainer)
 
   // Add image
-  const avatarDiv = createElement('div', 'chat-image avatar', bubbleDiv)
+  const avatarDiv = createElement('div', 'chat-image avatar relative', bubbleDiv)
   const avatarImgDiv = createElement('div', 'w-10 h-10 rounded-full overflow-hidden', avatarDiv)
   avatarImgDiv.style.width = '50px'
   avatarImgDiv.style.height = '50px'
@@ -35,7 +35,7 @@ const appendMessage = (message, sender) => {
   textDiv.textContent = message;
 
   if (sender === 'ai') {
-    addLoadingAnimation(textDiv);
+    addLoadingAnimation(avatarDiv);
   }
 
   // Add footer

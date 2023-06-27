@@ -101,8 +101,8 @@ const processAPIResponse = async (response, controller) => {
       });
     }
 
-   // Remove the loading animation after all data has been read
-  removeLoadingAnimation(lastAIMessageDiv.querySelector(".chat-bubble"));
+    // Remove the loading animation after all data has been read
+    removeLoadingAnimation(lastAIMessageDiv.querySelector('.chat-image'));
   };
 
   // Start reading the data stream
