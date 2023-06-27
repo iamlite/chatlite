@@ -1,7 +1,7 @@
 const os = require('os')
 const { clipboard } = require('electron')
 const domElements = require('./domElements')
-const { createElement, handleError } = require('./helperFunctions')
+const { createElement, handleError,addLoadingAnimation,removeLoadingAnimation } = require('./helperFunctions')
 
 // Render a message in the chat container
 const renderMessage = (content, sender) => {
@@ -31,8 +31,12 @@ const appendMessage = (message, sender) => {
 
 
   // Add chat bubble
-  const textDiv = createElement('div', `chat-bubble ${sender === 'ai' ? 'chat-bubble-secondary' : 'chat-bubble-primary'}`, bubbleDiv)
-  textDiv.textContent = message
+  const textDiv = createElement('div', `chat-bubble ${sender === 'ai' ? 'chat-bubble-secondary' : 'chat-bubble-primary'}`, bubbleDiv);
+  textDiv.textContent = message;
+
+  if (sender === 'ai') {
+    addLoadingAnimation(textDiv);
+  }
 
   // Add footer
   const footerDiv = createElement('div', 'chat-footer pt-2 opacity-50', bubbleDiv)

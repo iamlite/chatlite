@@ -43,9 +43,26 @@ const populateSettingsFields = (settings) => {
   });
 };
 
+
+const addLoadingAnimation = (bubbleDiv) => {
+  const loadingSpan = createElement('span', 'loading loading-ring loading-lg', bubbleDiv);
+  bubbleDiv.appendChild(loadingSpan);
+}
+
+
+const removeLoadingAnimation = (bubbleDiv) => {
+  const loadingSpan = bubbleDiv.querySelector('.loading');
+  if (loadingSpan) {
+    bubbleDiv.removeChild(loadingSpan);
+  }
+}
+
+
 module.exports = {
-    createElement,
-    handleError,
-    getElementById,
-    populateSettingsFields
+  createElement,
+  handleError,
+  getElementById,
+  populateSettingsFields,
+  addLoadingAnimation,
+  removeLoadingAnimation
 };

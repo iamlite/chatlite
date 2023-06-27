@@ -1,6 +1,6 @@
 // Import required modules
 const { appendMessage, renderMessage } = require("./chatHandler");
-const { handleError } = require("./helperFunctions");
+const { handleError, removeLoadingAnimation } = require("./helperFunctions");
 const domElements = require("./domElements");
 
 // Function to retrieve settings from the renderer process
@@ -100,6 +100,9 @@ const processAPIResponse = async (response, controller) => {
         }
       });
     }
+
+   // Remove the loading animation after all data has been read
+  removeLoadingAnimation(lastAIMessageDiv.querySelector(".chat-bubble"));
   };
 
   // Start reading the data stream
