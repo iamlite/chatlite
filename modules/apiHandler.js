@@ -60,7 +60,6 @@ const fetchApi = async (settings, messages, controller) => {
 }
 
 // Process the API response and render AI responses in the chat container
-// Process the API response and render AI responses in the chat container
 const processAPIResponse = async (response, controller) => {
   if (!response.ok) {
     handleError('API error:', response.statusText)
@@ -91,7 +90,6 @@ const processAPIResponse = async (response, controller) => {
     aiResponse += response // Accumulate the AI's response
   };
 
-
   // Read the data stream and process AI responses
   const readStreamData = async () => {
     while (true) {
@@ -114,8 +112,9 @@ const processAPIResponse = async (response, controller) => {
           if (content) renderAIResponse(content)
         })
       )
-  // Update the chat history when the entire AI's response has been read from the stream
-    ipcRenderer.send("update-chat-history", { role: 'ai', content: aiResponse });
+
+      // Update the chat history when the entire AI's response has been read from the stream
+      ipcRenderer.send("update-chat-history", { role: 'assistant', content: aiResponse });
 
       // check for errors and handle them accordingly
       promiseResults.forEach((result, idx) => {
@@ -143,7 +142,8 @@ const processAPIResponse = async (response, controller) => {
     domElements.generateBtn.disabled = false
     domElements.stopBtn.disabled = true
   }
-}
+};
+
 
 // Send message to OpenAI API
 const sendMessageToAPI = async (message) => {
