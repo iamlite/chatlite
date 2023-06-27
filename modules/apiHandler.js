@@ -113,9 +113,6 @@ const processAPIResponse = async (response, controller) => {
         })
       )
 
-      // Update the chat history when the entire AI's response has been read from the stream
-      ipcRenderer.send("update-chat-history", { role: 'assistant', content: aiResponse });
-
       // check for errors and handle them accordingly
       promiseResults.forEach((result, idx) => {
         if (result.status === 'rejected') {
@@ -123,6 +120,12 @@ const processAPIResponse = async (response, controller) => {
         }
       })
     }
+
+    // Update the chat history when the entire AI's response has been read from the stream
+    ipcRenderer.send("update-chat-history", { role: 'assistant', content: aiResponse });
+
+    // Reset the AI's response
+    aiResponse = ''
 
     // Remove the loading animation after all data has been read
     removeLoadingAnimation(lastAIMessageDiv.querySelector('.chat-image'))
@@ -143,7 +146,6 @@ const processAPIResponse = async (response, controller) => {
     domElements.stopBtn.disabled = true
   }
 };
-
 
 // Send message to OpenAI API
 const sendMessageToAPI = async (message) => {

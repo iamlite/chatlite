@@ -29,7 +29,6 @@ const appendMessage = (message, sender) => {
   const headerTime = createElement('time', 'text-xs opacity-50', headerDiv)
   headerTime.textContent = new Date().toLocaleTimeString()
 
-
   // Add chat bubble
   const textDiv = createElement('div', `chat-bubble ${sender === 'ai' ? 'chat-bubble-secondary' : 'chat-bubble-primary'}`, bubbleDiv);
   textDiv.textContent = message;
@@ -50,6 +49,7 @@ const appendMessage = (message, sender) => {
 
   return bubbleDiv
 }
+
 
 // Stop the chat generation process
 const stop = () => {

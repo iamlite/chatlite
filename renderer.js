@@ -22,6 +22,21 @@ domElements.clearButton.addEventListener('click', () => {
   domElements.chatContainer.innerHTML = '';
   messages = [];
 
+  document.addEventListener('DOMContentLoaded', (event) => {
+    // Load the chat history when the application starts
+    loadChatHistory();
+});
+
+// Load the chat history from the Electron Store and render it in the chat container
+const loadChatHistory = () => {
+  const chatHistory = store.get('chatHistory', []);
+  chatHistory.forEach(message => {
+    const { role, content } = message;
+    appendMessage(content, role);
+  });
+};
+
+
   // Clear the chat history in the Electron Store
   ipcRenderer.send("clear-chat-history");
 });
