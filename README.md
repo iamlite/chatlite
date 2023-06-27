@@ -46,4 +46,5 @@ chatLite/
 ## Planned Features
 
 File upload functionality.
+
 Integration with DALL-E for image generation.
