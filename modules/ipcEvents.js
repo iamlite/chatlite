@@ -51,4 +51,10 @@ ipcMain.on("update-chat-history", (event, message) => {
   store.set("chatHistory", chatHistory); // Update the chat history in the store
 });
 
+// Handle clear-chat-history IPC event
+ipcMain.on("clear-chat-history", () => {
+  store.set("chatHistory", []); // Clear the chat history in the store
+});
+
+
 module.exports = ipcMain;

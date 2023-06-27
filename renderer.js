@@ -19,6 +19,10 @@ domElements.generateBtn.addEventListener('click', generate)
 domElements.stopBtn.addEventListener('click', stop)
 domElements.settingsButton.addEventListener('click', () => ipcRenderer.invoke('open-settings-window') )
 domElements.clearButton.addEventListener('click', () => {
-  domElements.chatContainer.innerHTML = ''
-  messages = []
-})
+  domElements.chatContainer.innerHTML = '';
+  messages = [];
+
+  // Clear the chat history in the Electron Store
+  ipcRenderer.send("clear-chat-history");
+});
+

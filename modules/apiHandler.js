@@ -33,6 +33,7 @@ const getSettings = async () => {
 // Function to fetch data from the API
 const fetchApi = async (settings, messages, controller) => {
   // Send a POST request to the API endpoint with the provided settings and messages
+  console.log(messages);
   const response = await fetch(settings.endpointUrl, {
     method: 'POST',
     headers: {
@@ -59,6 +60,7 @@ const fetchApi = async (settings, messages, controller) => {
 }
 
 // Process the API response and render AI responses in the chat container
+// Process the API response and render AI responses in the chat container
 const processAPIResponse = async (response, controller) => {
   if (!response.ok) {
     handleError('API error:', response.statusText)
@@ -68,9 +70,9 @@ const processAPIResponse = async (response, controller) => {
   const reader = response.body.getReader()
   const decoder = new TextDecoder('utf-8')
   let lastAIMessageDiv = null
+  let aiResponse = '' // Initialize the AI's response
 
   // Render an AI response in the chat container
-  //Render an AI response in the chat container
   const renderAIResponse = (response) => {
     let bubbleDiv;
     if (lastAIMessageDiv) {
@@ -86,9 +88,9 @@ const processAPIResponse = async (response, controller) => {
     chatContainer.appendChild(lastAIMessageDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
-    // Update the chat history
-    ipcRenderer.send("update-chat-history", { role: 'ai', content: response });
+    aiResponse += response // Accumulate the AI's response
   };
+
 
   // Read the data stream and process AI responses
   const readStreamData = async () => {
@@ -112,6 +114,8 @@ const processAPIResponse = async (response, controller) => {
           if (content) renderAIResponse(content)
         })
       )
+  // Update the chat history when the entire AI's response has been read from the stream
+    ipcRenderer.send("update-chat-history", { role: 'ai', content: aiResponse });
 
       // check for errors and handle them accordingly
       promiseResults.forEach((result, idx) => {
