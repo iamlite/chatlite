@@ -45,7 +45,7 @@ const populateSettingsFields = (settings) => {
 
 
 const addLoadingAnimation = (avatarDiv) => {
-  const loadingElement = createElement('span', 'loading loading-infinity loading-md fade-in', avatarDiv);
+  const loadingElement = createElement('span', 'loading loading-infinity loading-md', avatarDiv);
   console.log('Loading animation added');
 }
 
