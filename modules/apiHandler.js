@@ -1,20 +1,34 @@
 // Import required modules
-const { appendMessage, renderMessage } = require("./chatHandler");
-const { handleError, removeLoadingAnimation } = require("./helperFunctions");
-const domElements = require("./domElements");
+const { appendMessage, renderMessage } = require('./chatHandler')
+const { handleError, removeLoadingAnimation } = require('./helperFunctions')
+const domElements = require('./domElements')
+const { ipcRenderer } = require('electron')
 
-// Function to retrieve settings from the renderer process
-const getSettings = async () => {
+// Function to retrieve chat history from the main process
+const getChatHistory = async () => {
   return new Promise((resolve) => {
-    // Send request to retrieve settings
-    ipcRenderer.send("retrieve-settings");
+    // Send request to retrieve chat history
+    ipcRenderer.send("retrieve-chat-history");
 
-    // Listen for the response from the renderer process
-    ipcRenderer.once("retrieve-settings-response", (event, settings) => {
-      resolve(settings);
+    // Listen for the response from the main process
+    ipcRenderer.once("retrieve-chat-history-response", (event, chatHistory) => {
+      resolve(chatHistory);
     });
   });
 };
+
+// Function to retrieve settings from the renderer process
+const getSettings = async () => {
+  return new Promise(resolve => {
+    // Send request to retrieve settings
+    ipcRenderer.send('retrieve-settings')
+
+    // Listen for the response from the renderer process
+    ipcRenderer.once('retrieve-settings-response', (event, settings) => {
+      resolve(settings)
+    })
+  })
+}
 
 // Function to fetch data from the API
 const fetchApi = async (settings, messages, controller) => {
@@ -39,23 +53,24 @@ const fetchApi = async (settings, messages, controller) => {
       stream: true
     }),
     signal: controller.signal
-  });
+  })
 
-  return response;
-};
+  return response
+}
 
 // Process the API response and render AI responses in the chat container
 const processAPIResponse = async (response, controller) => {
   if (!response.ok) {
-    handleError("API error:", response.statusText);
-    return;
+    handleError('API error:', response.statusText)
+    return
   }
 
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder("utf-8");
-  let lastAIMessageDiv = null;
+  const reader = response.body.getReader()
+  const decoder = new TextDecoder('utf-8')
+  let lastAIMessageDiv = null
 
   // Render an AI response in the chat container
+  //Render an AI response in the chat container
   const renderAIResponse = (response) => {
     let bubbleDiv;
     if (lastAIMessageDiv) {
@@ -70,68 +85,73 @@ const processAPIResponse = async (response, controller) => {
 
     chatContainer.appendChild(lastAIMessageDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    // Update the chat history
+    ipcRenderer.send("update-chat-history", { role: 'ai', content: response });
   };
 
   // Read the data stream and process AI responses
   const readStreamData = async () => {
     while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+      const { done, value } = await reader.read()
+      if (done) break
 
-      const chunk = decoder.decode(value);
-      const lines = chunk.split("\n");
+      const chunk = decoder.decode(value)
+      const lines = chunk.split('\n')
       const parsedLines = lines
-        .map((line) => line.replace(/^data: /, "").trim())
-        .filter((line) => line !== "" && line !== "[DONE]")
-        .map((line) => JSON.parse(line));
+        .map(line => line.replace(/^data: /, '').trim())
+        .filter(line => line !== '' && line !== '[DONE]')
+        .map(line => JSON.parse(line))
 
       // handle multiple promises
-      const promiseResults = await Promise.allSettled(parsedLines.map((parsedLine) => {
-        const { choices } = parsedLine;
-        const { delta } = choices[0];
-        const { content } = delta;
-        if (content) renderAIResponse(content);
-      }));
+      const promiseResults = await Promise.allSettled(
+        parsedLines.map(parsedLine => {
+          const { choices } = parsedLine
+          const { delta } = choices[0]
+          const { content } = delta
+          if (content) renderAIResponse(content)
+        })
+      )
 
       // check for errors and handle them accordingly
       promiseResults.forEach((result, idx) => {
         if (result.status === 'rejected') {
-          handleError(result.reason, `Error occurred in promise #${idx+1}`);
+          handleError(result.reason, `Error occurred in promise #${idx + 1}`)
         }
-      });
+      })
     }
 
     // Remove the loading animation after all data has been read
-    removeLoadingAnimation(lastAIMessageDiv.querySelector('.chat-image'));
-  };
+    removeLoadingAnimation(lastAIMessageDiv.querySelector('.chat-image'))
+  }
 
   // Start reading the data stream
   try {
-    await readStreamData();
+    await readStreamData()
   } catch (error) {
     if (controller && controller.signal.aborted) {
-      const errorMessageDiv = appendMessage("Request aborted.", "error");
-      errorMessageDiv.classList.add("chat-bubble", "error");
+      const errorMessageDiv = appendMessage('Request aborted.', 'error')
+      errorMessageDiv.classList.add('chat-bubble', 'error')
     } else {
-      handleError(error, "Error occurred while generating.");
+      handleError(error, 'Error occurred while generating.')
     }
   } finally {
-    domElements.generateBtn.disabled = false;
-    domElements.stopBtn.disabled = true;
+    domElements.generateBtn.disabled = false
+    domElements.stopBtn.disabled = true
   }
-};
+}
 
 // Send message to OpenAI API
 const sendMessageToAPI = async (message) => {
   const settings = await getSettings();
-  const messages = [message];
+  const chatHistory = await getChatHistory(); // Retrieve the chat history
 
   domElements.generateBtn.disabled = true;
   domElements.stopBtn.disabled = false;
   const controller = new AbortController();
   
   try {
-    const response = await fetchApi(settings, messages, controller);
+    const response = await fetchApi(settings, chatHistory, controller);
     await processAPIResponse(response, controller);
   } catch (error) {
     handleError(error, "Error occurred while generating.");
@@ -146,5 +166,5 @@ module.exports = {
   getSettings,
   fetchApi,
   processAPIResponse,
-  sendMessageToAPI,
-};
+  sendMessageToAPI
+}

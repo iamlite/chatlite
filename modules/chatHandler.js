@@ -71,6 +71,9 @@ const generate = async () => {
   renderMessage(userMessage.content, 'user')
   domElements.promptInput.value = ''
 
+  // Update the chat history
+  ipcRenderer.send("update-chat-history", userMessage);
+
   try {
     // Import sendMessageToAPI from its module
     const { sendMessageToAPI } = require('./apiHandler')
