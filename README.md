@@ -3,8 +3,11 @@
 ## About
 
 Electron app for chatting with the OpenAI API.
+
 Back-and-forth conversation interface.
+
 UI designed with Tailwind CSS and DaisyUI.
+
 Data stored using Electron Store.
 
 ## Technologies Used
