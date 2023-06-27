@@ -1,0 +1,36 @@
+# macOS
+.DS_Store
+build/
+dist/
+
+# bs stuff
+.workingold/
+appstructure.md
+
+# Node.js
+node_modules/
+
+# Yarn
+yarn-error.log
+yarn.lock
+
+# Electron
+electron-out/
+*.asar
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Logs
+logs/
+*.log
+
+# Build artifacts
+out/
+.packaging/
+.release/
+
+# Dependencies
+package-lock.json
+npm-debug.log

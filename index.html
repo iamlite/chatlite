@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+  <!-- Meta Data -->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- CSS and JS  -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.6/dist/full.css" rel="stylesheet" type="text/css" />
+  <link href="resources/css/output.css" rel="stylesheet"/>
+  <script src="resources/libs/anime.min.js" defer></script>
+  <script src="renderer.js" defer></script>
+
+
+  <!-- other -->
+  <title>Chatlr</title>
+</head>
+
+<body
+  class="flex flex-col h-screen items-center justify-center p-5 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900">
+
+  <div class="flex flex-col full h-full w-full">
+    <!-- Header Section -->
+    <header class="flex justify-end" style="-webkit-app-region: drag;">
+
+      <button id="clearButton"
+        class="shadow-md px-4 py-2 rounded-lg bg-gray-400 text-white hover:bg-amber-500 focus:outline-none mr-1 disabled:opacity-75 disabled:cursor-not-allowed dark:bg-zinc-900 dark:hover:bg-amber-500 fade-in delay-1 transition duration-500 ease-in-out">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+        </svg>
+      </button>
+
+      <button id="settingsButton"
+        class="shadow-md px-4 py-2 rounded-lg bg-gray-400 text-white hover:bg-amber-500 focus:outline-none mr-1 disabled:opacity-75 disabled:cursor-not-allowed dark:bg-zinc-900 dark:hover:bg-amber-500 fade-in delay-2 transition duration-500 ease-in-out">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495" />
+        </svg>
+      </button>
+
+      <button id="darkModeToggle"
+        class="shadow-md px-4 py-2 rounded-lg bg-gray-400 text-white hover:bg-amber-500 focus:outline-none mr-2 disabled:opacity-75 disabled:cursor-not-allowed dark:bg-zinc-900 dark:hover:bg-amber-500 fade-in delay-3 transition duration-500 ease-in-out">
+        <svg id="lightModeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+        </svg>
+        <svg id="darkModeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+        </svg>
+      </button>
+    </header>
+
+
+    <main id="chatContainer"
+      class="flex flex-col flex-grow max-w-full transition duration-500 ease-in-out rounded-3xl bg-zinc-100/30 dark:bg-zinc-900 shadow-2xl outline outline-zinc-100/30 dark:outline-zinc-900 backdrop-blur-sm overflow-y-auto pt-5 m-5 mt-10">
+
+      <!-- Messages get added here by renderer.js file -->
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="text-center py-4 fade-in delay-4">
+      <div class=" px-4 pt-4 mb-2 sm:mb-0">
+        <div class="relative flex">
+          <span class="absolute flex items-center">
+            <button type="button" id="speechBtn"
+              class="inline-flex items-center justify-center rounded-lg h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                class="h-6 w-6 text-gray-600">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z">
+                </path>
+              </svg>
+            </button>
+          </span>
+          <input type="text" id="promptInput" placeholder="Write your message!"
+            class="w-full transition duration-500 ease-in-out focus:outline-none focus:placeholder-gray-400 text-gray-500 placeholder-gray-500 pl-12 bg-gray-200 dark:bg-zinc-900 dark:text-gray-200 rounded-lg py-3 shadow-xl">
+          <div class="absolute right-0 items-center inset-y-0 hidden sm:flex">
+
+            <button type="button" id="generateBtn"
+              class="inline-flex items-center justify-center px-4 py-3 transition duration-500 ease-in-out text-zinc-700 dark:text-gray-200 bg-gray-200 dark:bg-zinc-900 dark:hover:bg-amber-500 hover:bg-amber-500 focus:outline-none">
+              <span class="font-semibold">Send</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                class="h-6 w-6 ml-2 transform rotate-90">
+                <path
+                  d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+                </path>
+              </svg>
+            </button>
+
+            <button type="button" id="stopBtn" disabled
+              class="inline-flex items-center justify-center rounded-e-lg px-4 py-3  text-white bg-red-500 hover:bg-red-600 hover:border-transparent transition ease-in duration-200 transform hover:-translate-y-1 active:translate-y-0 disabled:opacity-75 disabled:cursor-not-allowed">
+              Stop
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Footer Section Ends-->
+  </div>
+</body>
+
+</html>

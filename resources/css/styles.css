@@ -1,0 +1,50 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body {
+  -webkit-app-region: drag;
+}
+
+input[type="text"] {
+  border: none;
+  outline: none;
+}
+
+/* Animation related styles */
+.fade-in {
+  opacity: 0;
+  animation: fade-in-animation 1s forwards;
+}
+
+@keyframes fade-in-animation {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.5s; }
+.delay-3 { animation-delay: 0.8s; }
+.delay-4 { animation-delay: 1s; }
+
+/* Scrollbar styles */
+#chatContainer::-webkit-scrollbar {
+  width: 5px;
+}
+
+#chatContainer::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+#chatContainer::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+#chatContainer::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+#chatContainer {
+  -webkit-mask: linear-gradient(white, white);
+  mask: linear-gradient(white, white);
+}
