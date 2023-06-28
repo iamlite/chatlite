@@ -9,7 +9,7 @@ https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clik
 code[class*="language-"],
 pre[class*="language-"] {
 	color: #f8f8f2;
-	background: none;
+	background: #000000;
 	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	font-size: 1em;
@@ -187,7 +187,7 @@ span.inline-color-wrapper {
 	width: 1.333ch;
 	margin: 0 .333ch;
 	box-sizing: border-box;
-	border: 1px solid white;
+	border: 1px solid rgb(170, 170, 170);
 	outline: 1px solid rgba(0,0,0,.5);
 	overflow: hidden;
 }

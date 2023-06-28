@@ -4,7 +4,6 @@ const { handleError, removeLoadingAnimation } = require("./helperFunctions");
 const domElements = require("./domElements");
 const { ipcRenderer } = require("electron");
 const MarkdownIt = require('markdown-it');
-const markdownItPrism = require('markdown-it-prism');
 const DOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 
@@ -12,9 +11,8 @@ const { JSDOM } = require('jsdom');
 const window = new JSDOM('').window;
 const DOMPurifyInstance = DOMPurify(window);
 
-// Create a new MarkdownIt instance and use the markdown-it-prism plugin
+// Create a new MarkdownIt instance 
 const md = new MarkdownIt();
-md.use(markdownItPrism);
 
 // Function to retrieve chat history from the main process
 const getChatHistory = async () => {
@@ -102,8 +100,6 @@ const processAPIResponse = async (response, controller) => {
 
     aiResponse += response; // Accumulate the AI's response
 
-    // Highlight the code blocks in the chat bubble
-    Prism.highlightAll();
     };
     
 // Read the data stream and process AI responses

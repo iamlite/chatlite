@@ -28,7 +28,6 @@
     "github-markdown-css": "^5.2.0",
     "jsdom": "^22.1.0",
     "markdown-it": "^13.0.1",
-    "markdown-it-prism": "^2.3.0",
     "postcss": "^8.4.24",
     "postcss-cli": "^10.1.0",
     "prismjs": "^1.29.0",
