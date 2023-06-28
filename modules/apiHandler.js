@@ -4,15 +4,17 @@ const { handleError, removeLoadingAnimation } = require("./helperFunctions");
 const domElements = require("./domElements");
 const { ipcRenderer } = require("electron");
 const MarkdownIt = require('markdown-it');
+const markdownItPrism = require('markdown-it-prism');
 const DOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 
+// Create a new JSDOM instance
 const window = new JSDOM('').window;
 const DOMPurifyInstance = DOMPurify(window);
 
+// Create a new MarkdownIt instance and use the markdown-it-prism plugin
 const md = new MarkdownIt();
-
-// Render a message in the chat cont
+md.use(markdownItPrism);
 
 // Function to retrieve chat history from the main process
 const getChatHistory = async () => {
@@ -191,16 +193,20 @@ const sendMessageToAPI = async (message) => {
   const settings = await getSettings();
   const chatHistory = await getChatHistory(); // Retrieve the chat history
 
+  console.log('Sending message to API');
   domElements.generateBtn.disabled = true;
   domElements.stopBtn.disabled = false;
   const controller = new AbortController();
 
   try {
+    console.log('Fetching API');
     const response = await fetchApi(settings, chatHistory, controller);
     await processAPIResponse(response, controller);
   } catch (error) {
+    console.error('Error occurred while generating:', error);
     handleError(error, "Error occurred while generating.");
   } finally {
+    console.log('API request completed');
     domElements.generateBtn.disabled = false;
     domElements.stopBtn.disabled = true;
   }

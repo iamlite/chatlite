@@ -3,6 +3,7 @@ const { clipboard } = require('electron')
 const domElements = require('./domElements')
 const { createElement, handleError,addLoadingAnimation,removeLoadingAnimation } = require('./helperFunctions')
 const MarkdownIt = require('markdown-it');
+const markdownItPrism = require('markdown-it-prism');
 const DOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 
@@ -10,6 +11,8 @@ const window = new JSDOM('').window;
 const DOMPurifyInstance = DOMPurify(window);
 
 const md = new MarkdownIt();
+md.use(markdownItPrism);
+
 
 // Render a message in the chat container
 const renderMessage = (content, sender, isLoadingFromHistory = false) => {
