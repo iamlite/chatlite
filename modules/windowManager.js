@@ -15,7 +15,7 @@ function createWindow() {
     height: 800,
     frame: false,
     titleBarStyle: 'hidden',
-    opacity: 0.98,
+    opacity: 0.99,
     icon: path.resolve(__dirname, 'resources', 'img', 'icon.icns'),
     webPreferences: {
       nodeIntegration: true,
