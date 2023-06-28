@@ -1,6 +1,5 @@
-const { ipcRenderer } = require('electron');
 const domElements = require('./domElements');
-const Store = require('electron-store');
+
 
 // Update the dark mode icon based on the current mode
 const updateDarkModeIcon = (shouldUseDarkColors) => {
