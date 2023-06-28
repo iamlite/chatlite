@@ -2,6 +2,11 @@ const { ipcRenderer } = require("electron");
 const { handleError, getElementById, populateSettingsFields } = require('./modules/helperFunctions');
 const fs = require('fs');
 const path = require('path');
+const store = store || require('electron-store')();
+
+// Check the dark mode setting and apply it
+const shouldUseDarkColors = store.get('darkMode', false);
+document.documentElement.classList.toggle('dark', shouldUseDarkColors);
 
 
 // Send a request to retrieve the stored settings from the main process
