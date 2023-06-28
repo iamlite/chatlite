@@ -125,9 +125,11 @@ const promiseResults = await Promise.allSettled(
     const { delta } = choices[0];
     const { content } = delta;
     if (content) {
-      aiResponse += content; // Accumulate the AI's response
+      // Replace newline characters with two spaces followed by a newline character
+      const formattedContent = content.replace(/\n/g, '  \n');
+      aiResponse += formattedContent; // Accumulate the AI's response
       if (!lastAIMessageDiv) {
-        lastAIMessageDiv = appendMessage(content, "ai");
+        lastAIMessageDiv = appendMessage(formattedContent, "ai");
       } else {
         // Update the existing AI message with the accumulated response
         const bubbleDiv = lastAIMessageDiv.querySelector(".chat-bubble");
@@ -135,9 +137,12 @@ const promiseResults = await Promise.allSettled(
         // Apply PrismJS highlighting to the new content
         Prism.highlightAllUnder(bubbleDiv);
       }
+      // Scroll to the bottom of the chat container
+      domElements.chatContainer.scrollTop = domElements.chatContainer.scrollHeight;
     }
   })
 );
+
 
 
     // check for errors and handle them accordingly
