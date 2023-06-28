@@ -1,5 +1,8 @@
 const { ipcRenderer } = require("electron");
 const { handleError, getElementById, populateSettingsFields } = require('./modules/helperFunctions');
+const fs = require('fs');
+const path = require('path');
+
 
 // Send a request to retrieve the stored settings from the main process
 ipcRenderer.send('retrieve-settings');
@@ -56,6 +59,24 @@ if (saveButton) {
   });
 }
 
+const promptsPath = path.join(__dirname, './resources/prompts.json');
+const prompts = JSON.parse(fs.readFileSync(promptsPath, 'utf8'));
+
+const premadePromptsSelect = getElementById('premadePrompts');
+prompts.forEach(prompt => {
+  const option = document.createElement('option');
+  option.value = prompt.content;
+  option.text = prompt.title;
+  premadePromptsSelect.appendChild(option);
+});
+
+premadePromptsSelect.addEventListener('change', () => {
+  const initialPromptTextarea = getElementById('initialPrompt');
+  initialPromptTextarea.value = premadePromptsSelect.value;
+});
+
+
 module.exports = {
   saveButton,
+  premadePromptsSelect,
 };

@@ -5,8 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="resources/css/tailwind.css" />
   <title>Settings</title>
   <style>
     /* Copy the CSS styles from styles.css and paste them here */
@@ -42,8 +41,9 @@
   </style>
 </head>
 
-<body class="bg-white dark:bg-zinc-800 dark:text-gray-200 p-10 m-0 overflow-auto">
+<body class="p-10 m-0 overflow-auto bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900">
   <h1 class="m-0 text-3xl font-bold text-center">Settings</h1>
+
   <div id="settingsContainer" class="w-full flex flex-col justify-between">
     <label for="apiKey" class="font-bold">API Key:</label>
     <input type="text" id="apiKey" name="apiKey"
@@ -173,6 +173,14 @@
           class="w-full px-4 py-2 rounded-md bg-gray-200 placeholder-gray-500 dark:bg-zinc-900 dark:placeholder-gray-200 focus:outline-none"
           placeholder="Initial Prompt" rows="4">
           You are a helpful assistant.</textarea>
+      </div>
+      
+      <div class="full-width">
+        <label for="premadePrompts" class="font-bold">Pre-made Prompts:</label>
+        <select id="premadePrompts" name="premadePrompts"
+          class="w-full px-4 py-2 rounded-md bg-gray-200 dark:bg-zinc-900 dark:placeholder-gray-200 focus:outline-none">
+          <!-- The options will be populated dynamically -->
+        </select>
       </div>
     </div>
 
