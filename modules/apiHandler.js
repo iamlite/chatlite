@@ -99,39 +99,63 @@ const processAPIResponse = async (response, controller) => {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
     aiResponse += response; // Accumulate the AI's response
-  };
 
+    // Highlight the code blocks in the chat bubble
+    Prism.highlightAll();
+    };
+    
+// Read the data stream and process AI responses
+const readStreamData = async () => {
+  let aiResponse = ""; // Initialize the AI response variable
+  let lastAIMessageDiv = null; // Initialize the last AI message element
 
-  // Read the data stream and process AI responses
-  const readStreamData = async () => {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
 
-      const chunk = decoder.decode(value);
-      const lines = chunk.split("\n");
-      const parsedLines = lines
-        .map((line) => line.replace(/^data: /, "").trim())
-        .filter((line) => line !== "" && line !== "[DONE]")
-        .map((line) => JSON.parse(line));
+    const chunk = decoder.decode(value);
+    const lines = chunk.split("\n");
+    const parsedLines = lines
+      .map((line) => line.replace(/^data: /, "").trim())
+      .filter((line) => line !== "" && line !== "[DONE]")
+      .map((line) => JSON.parse(line)); // Parse the line as JSON
 
-      // handle multiple promises
-      const promiseResults = await Promise.allSettled(
-        parsedLines.map((parsedLine) => {
-          const { choices } = parsedLine;
-          const { delta } = choices[0];
-          const { content } = delta;
-          if (content) renderAIResponse(content);
-        })
-      );
-
-      // check for errors and handle them accordingly
-      promiseResults.forEach((result, idx) => {
-        if (result.status === "rejected") {
-          handleError(result.reason, `Error occurred in promise #${idx + 1}`);
+    // handle multiple promises
+    const promiseResults = await Promise.allSettled(
+      parsedLines.map((parsedLine) => {
+        const { choices } = parsedLine;
+        const { delta } = choices[0];
+        const { content } = delta;
+        if (content) {
+          aiResponse += content; // Accumulate the AI's response
+          if (!lastAIMessageDiv) {
+            lastAIMessageDiv = appendMessage(content, "ai");
+          } else {
+            // Update the existing AI message with the accumulated response
+            const bubbleDiv = lastAIMessageDiv.querySelector(".chat-bubble");
+            bubbleDiv.innerHTML = DOMPurifyInstance.sanitize(md.render(aiResponse));
+          }
         }
-      });
+      })
+    );
+
+    // check for errors and handle them accordingly
+    promiseResults.forEach((result, idx) => {
+      if (result.status === "rejected") {
+        handleError(result.reason, `Error occurred in promise #${idx + 1}`);
+      }
+    });
+
+    // If the "[DONE]" message is received, render the entire AI response as markdown
+    if (lines.includes("[DONE]")) {
+      if (lastAIMessageDiv) {
+        const bubbleDiv = lastAIMessageDiv.querySelector(".chat-bubble");
+        bubbleDiv.innerHTML = DOMPurifyInstance.sanitize(md.render(aiResponse));
+      }
+      aiResponse = ""; // Reset the AI's response
+      lastAIMessageDiv = null; // Reset the last AI message element
     }
+  }
 
     // Update the chat history when the entire AI's response has been read from the stream
     ipcRenderer.send("update-chat-history", {

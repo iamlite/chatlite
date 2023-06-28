@@ -39,8 +39,9 @@ const appendMessage = (message, sender, isLoadingFromHistory = false) => {
   headerTime.textContent = new Date().toLocaleTimeString()
 
   // Add chat bubble
-  const textDiv = createElement('div', `chat-bubble ${sender === 'ai' ? 'chat-bubble-secondary' : 'chat-bubble-primary'}`, bubbleDiv);
-  
+
+  const textDiv = createElement('div', `chat-bubble ${sender === 'ai' ? 'chat-bubble-secondary' : 'chat-bubble-primary'} markdown-body`, bubbleDiv);
+
   // Parse the message as markdown, sanitize it, and set it as the innerHTML of the textDiv
   const sanitizedHTML = DOMPurifyInstance.sanitize(md.render(message));
   textDiv.innerHTML = sanitizedHTML;
