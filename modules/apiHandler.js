@@ -3,6 +3,16 @@ const { appendMessage, renderMessage } = require("./chatHandler");
 const { handleError, removeLoadingAnimation } = require("./helperFunctions");
 const domElements = require("./domElements");
 const { ipcRenderer } = require("electron");
+const MarkdownIt = require('markdown-it');
+const DOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
+
+const window = new JSDOM('').window;
+const DOMPurifyInstance = DOMPurify(window);
+
+const md = new MarkdownIt();
+
+// Render a message in the chat cont
 
 // Function to retrieve chat history from the main process
 const getChatHistory = async () => {
@@ -77,12 +87,12 @@ const processAPIResponse = async (response, controller) => {
     let bubbleDiv;
     if (lastAIMessageDiv) {
       bubbleDiv = lastAIMessageDiv.querySelector(".chat-bubble");
-      bubbleDiv.innerText += response;
+      bubbleDiv.innerHTML += DOMPurifyInstance.sanitize(md.render(response));
     } else {
       lastAIMessageDiv = appendMessage(response, "ai");
       lastAIMessageDiv.id = "replyBubble";
       bubbleDiv = lastAIMessageDiv.querySelector(".chat-bubble");
-      bubbleDiv.innerText = response;
+      bubbleDiv.innerHTML = DOMPurifyInstance.sanitize(md.render(response));
     }
 
     chatContainer.appendChild(lastAIMessageDiv);
@@ -90,6 +100,7 @@ const processAPIResponse = async (response, controller) => {
 
     aiResponse += response; // Accumulate the AI's response
   };
+
 
   // Read the data stream and process AI responses
   const readStreamData = async () => {

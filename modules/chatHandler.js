@@ -2,6 +2,14 @@ const os = require('os')
 const { clipboard } = require('electron')
 const domElements = require('./domElements')
 const { createElement, handleError,addLoadingAnimation,removeLoadingAnimation } = require('./helperFunctions')
+const MarkdownIt = require('markdown-it');
+const DOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
+
+const window = new JSDOM('').window;
+const DOMPurifyInstance = DOMPurify(window);
+
+const md = new MarkdownIt();
 
 // Render a message in the chat container
 const renderMessage = (content, sender, isLoadingFromHistory = false) => {
@@ -32,7 +40,10 @@ const appendMessage = (message, sender, isLoadingFromHistory = false) => {
 
   // Add chat bubble
   const textDiv = createElement('div', `chat-bubble ${sender === 'ai' ? 'chat-bubble-secondary' : 'chat-bubble-primary'}`, bubbleDiv);
-  textDiv.textContent = message;
+  
+  // Parse the message as markdown, sanitize it, and set it as the innerHTML of the textDiv
+  const sanitizedHTML = DOMPurifyInstance.sanitize(md.render(message));
+  textDiv.innerHTML = sanitizedHTML;
 
   if (sender === 'ai' && !isLoadingFromHistory) {
     addLoadingAnimation(avatarDiv);
