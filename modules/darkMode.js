@@ -1,6 +1,5 @@
 const domElements = require('./domElements');
 
-
 // Update the dark mode icon based on the current mode
 const updateDarkModeIcon = (shouldUseDarkColors) => {
   if (domElements.lightModeIcon && domElements.darkModeIcon) {
