@@ -118,24 +118,27 @@ const readStreamData = async () => {
       .filter((line) => line !== "" && line !== "[DONE]")
       .map((line) => JSON.parse(line)); // Parse the line as JSON
 
-    // handle multiple promises
-    const promiseResults = await Promise.allSettled(
-      parsedLines.map((parsedLine) => {
-        const { choices } = parsedLine;
-        const { delta } = choices[0];
-        const { content } = delta;
-        if (content) {
-          aiResponse += content; // Accumulate the AI's response
-          if (!lastAIMessageDiv) {
-            lastAIMessageDiv = appendMessage(content, "ai");
-          } else {
-            // Update the existing AI message with the accumulated response
-            const bubbleDiv = lastAIMessageDiv.querySelector(".chat-bubble");
-            bubbleDiv.innerHTML = DOMPurifyInstance.sanitize(md.render(aiResponse));
-          }
-        }
-      })
-    );
+// handle multiple promises
+const promiseResults = await Promise.allSettled(
+  parsedLines.map((parsedLine) => {
+    const { choices } = parsedLine;
+    const { delta } = choices[0];
+    const { content } = delta;
+    if (content) {
+      aiResponse += content; // Accumulate the AI's response
+      if (!lastAIMessageDiv) {
+        lastAIMessageDiv = appendMessage(content, "ai");
+      } else {
+        // Update the existing AI message with the accumulated response
+        const bubbleDiv = lastAIMessageDiv.querySelector(".chat-bubble");
+        bubbleDiv.innerHTML = DOMPurifyInstance.sanitize(md.render(aiResponse));
+        // Apply PrismJS highlighting to the new content
+        Prism.highlightAllUnder(bubbleDiv);
+      }
+    }
+  })
+);
+
 
     // check for errors and handle them accordingly
     promiseResults.forEach((result, idx) => {
@@ -154,19 +157,21 @@ const readStreamData = async () => {
       lastAIMessageDiv = null; // Reset the last AI message element
     }
   }
+  // Update the chat history when the entire AI's response has been read from the stream
+  ipcRenderer.send("update-chat-history", {
+    role: "assistant",
+    content: aiResponse,
+  });
 
-    // Update the chat history when the entire AI's response has been read from the stream
-    ipcRenderer.send("update-chat-history", {
-      role: "assistant",
-      content: aiResponse,
-    });
+  // Apply PrismJS highlighting to the new content
+  Prism.highlightAllUnder(lastAIMessageDiv.querySelector(".chat-bubble"));
 
-    // Reset the AI's response
-    aiResponse = "";
+  // Reset the AI's response
+  aiResponse = "";
 
-    // Remove the loading animation after all data has been read
-    removeLoadingAnimation(lastAIMessageDiv.querySelector(".chat-image"));
-  };
+  // Remove the loading animation after all data has been read
+  removeLoadingAnimation(lastAIMessageDiv.querySelector(".chat-image"));
+};
 
   // Start reading the data stream
   try {
