@@ -25,6 +25,11 @@ async function retrieveAndRenderChatHistory() {
   });
 }
 
+document.getElementById('saveChatButton').addEventListener('click', () => {
+  ipcRenderer.send('save-chat-history');
+});
+
+
 // Event listeners
 domElements.promptInput.addEventListener('keyup', event => { if (event.key === 'Enter') { generate() } })
 domElements.generateBtn.addEventListener('click', generate)

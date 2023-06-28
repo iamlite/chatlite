@@ -163,7 +163,7 @@ const promiseResults = await Promise.allSettled(
     }
   }
   // Update the chat history when the entire AI's response has been read from the stream
-  ipcRenderer.send("update-chat-history", {
+  ipcRenderer.send("save-or-update-chat-history", {
     role: "assistant",
     content: aiResponse,
   });

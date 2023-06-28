@@ -19,6 +19,9 @@ const handleError = (error, message, severity = 'error') => {
         break;
     }
     renderMessage(message, severity);
+  
+    // Display an error message to the user
+    alert(`An error occurred: ${message}`);
   };
 
 // Helper function to retrieve DOM elements by ID

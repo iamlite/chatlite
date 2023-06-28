@@ -3,8 +3,10 @@ const Store = require('electron-store');
 const path = require('path');
 const { createWindow, createSettingsWindow } = require('./modules/windowManager');
 const ipcEvents = require('./modules/ipcEvents');
+const fs = require('fs');
 
 const store = new Store();
+
 
 let mainWindow = null;
 let settingsWindow = null; // Reference to the settings window
