@@ -63,6 +63,9 @@ const appendMessage = (message, sender, isLoadingFromHistory = false) => {
       clipboard.writeText(textDiv.innerText)
     })
   }
+  
+  // After appending a new message, adjust the scroll position
+  domElements.chatContainer.scrollTop = domElements.chatContainer.scrollHeight - domElements.chatContainer.clientHeight;
 
   return bubbleDiv
 }
