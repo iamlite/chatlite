@@ -50,4 +50,13 @@ domElements.darkModeToggle.addEventListener('click', () => {
 // Listen for theme updates
 ipcRenderer.on('theme-updated', (event, theme) => {
   document.documentElement.className = theme;
+  
+  // Show the correct icon based on the theme
+  if (theme === 'dark') {
+    domElements.lightModeIcon.style.display = 'none';
+    domElements.darkModeIcon.style.display = 'block';
+  } else {
+    domElements.lightModeIcon.style.display = 'block';
+    domElements.darkModeIcon.style.display = 'none';
+  }
 });

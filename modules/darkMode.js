@@ -8,6 +8,12 @@ function getSystemTheme() {
   return nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
 }
 
+// Get the current theme
+function getCurrentTheme() {
+  return store.get('theme', getSystemTheme());
+}
+
+
 // Toggle the theme
 function toggleTheme() {
   const currentTheme = store.get('theme', getSystemTheme());
@@ -23,6 +29,7 @@ function updateThemeInStore(theme) {
 
 module.exports = {
   getSystemTheme,
+  getCurrentTheme,
   toggleTheme,
   updateThemeInStore,
 };

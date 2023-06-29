@@ -1,6 +1,7 @@
 const { BrowserWindow, nativeTheme } = require('electron');
 const path = require('path');
-const { getSystemTheme } = require('./darkMode');
+const { getSystemTheme, getCurrentTheme } = require('./darkMode');
+
 
 let mainWindow = null;
 let settingsWindow = null;
@@ -59,9 +60,12 @@ function createSettingsWindow() {
 
   settingsWindow.loadFile('settings.html');
 
+  // Send the current theme to the settings window
+  const currentTheme = getCurrentTheme();
   settingsWindow.webContents.on('did-finish-load', () => {
-    settingsWindow.webContents.send('theme-updated', getSystemTheme());
+    settingsWindow.webContents.send('theme-updated', currentTheme);
   });
+
 
   settingsWindow.on('blur', () => {
     settingsWindow.close();
