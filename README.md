@@ -1,5 +1,7 @@
 # ChatLite
 
+developement
+
 ## About
 
 Electron app for chatting with the OpenAI API.
