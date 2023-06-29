@@ -1,6 +1,6 @@
 # ChatLite
 
-developement
+dev
 
 ## About
 
