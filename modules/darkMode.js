@@ -1,30 +1,28 @@
-const { ipcRenderer } = require('electron');
-const domElements = require('./domElements');
+const { nativeTheme } = require('electron');
+const Store = require('electron-store');
 
-// Update the dark mode icon based on the current mode
-const updateDarkModeIcon = (shouldUseDarkColors) => {
-  domElements.lightModeIcon.classList.toggle('hidden', shouldUseDarkColors);
-  domElements.darkModeIcon.classList.toggle('hidden', !shouldUseDarkColors);
-};
+const store = new Store();
 
-// Toggle dark mode
-const toggleDarkMode = () => {
-  const shouldUseDarkColors = document.documentElement.classList.toggle('dark');
-  updateDarkModeIcon(shouldUseDarkColors);
-};
+// Get the current system theme
+function getSystemTheme() {
+  return nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
+}
 
-// Event listener for dark mode toggle
-domElements.darkModeToggle.addEventListener('click', toggleDarkMode);
+// Toggle the theme
+function toggleTheme() {
+  const currentTheme = store.get('theme', getSystemTheme());
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  store.set('theme', newTheme);
+  return newTheme;
+}
 
-// Event listener for 'dark-mode' event from main process
-ipcRenderer.on('dark-mode', (event, shouldUseDarkColors) => {
-  console.log('Received dark-mode event:', shouldUseDarkColors);
-  document.documentElement.classList.toggle('dark', shouldUseDarkColors);
-  updateDarkModeIcon(shouldUseDarkColors);
-});
+// Update the theme in the Electron Store
+function updateThemeInStore(theme) {
+  store.set('theme', theme);
+}
 
 module.exports = {
-  toggleDarkMode,
-  updateDarkModeIcon
+  getSystemTheme,
+  toggleTheme,
+  updateThemeInStore,
 };
-

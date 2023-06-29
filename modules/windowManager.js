@@ -1,6 +1,6 @@
 const { BrowserWindow, nativeTheme } = require('electron');
 const path = require('path');
-
+const { getSystemTheme } = require('./darkMode');
 
 let mainWindow = null;
 let settingsWindow = null;
@@ -27,11 +27,14 @@ function createWindow() {
 
   mainWindow.loadFile('index.html');
 
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.webContents.send('theme-updated', getSystemTheme());
+  });
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
 }
-
 
 function createSettingsWindow() {
   if (settingsWindow) {
@@ -56,6 +59,9 @@ function createSettingsWindow() {
 
   settingsWindow.loadFile('settings.html');
 
+  settingsWindow.webContents.on('did-finish-load', () => {
+    settingsWindow.webContents.send('theme-updated', getSystemTheme());
+  });
 
   settingsWindow.on('blur', () => {
     settingsWindow.close();

@@ -75,6 +75,11 @@ premadePromptsSelect.addEventListener('change', () => {
   initialPromptTextarea.value = premadePromptsSelect.value;
 });
 
+// Listen for theme updates
+ipcRenderer.on('theme-updated', (event, theme) => {
+  document.documentElement.className = theme;
+});
+
 
 module.exports = {
   saveButton,

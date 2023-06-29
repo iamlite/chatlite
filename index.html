@@ -10,8 +10,8 @@
   <!-- CSS -->
   <link href="resources/css/gitmd.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.6/dist/full.css" rel="stylesheet" type="text/css" />
-  <link href="resources/css/tailwind.css" rel="stylesheet"/>
-  <link href="resources/css/prism.css" rel="stylesheet"/>
+  <link href="resources/css/tailwind.css" rel="stylesheet" />
+  <link href="resources/css/prism.css" rel="stylesheet" />
 
   <!-- JS -->
   <script src="resources/libs/prism.js"></script>
@@ -21,13 +21,12 @@
 </head>
 
 <body
-  class="line-numbers match-braces rainbow-braces flex flex-col h-screen items-center justify-center p-5 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 ">
-
+  class="line-numbers match-braces rainbow-braces flex flex-col h-screen items-center justify-center p-5 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900">
   <div class="flex flex-col full h-full w-full">
     <!-- Header Section -->
-    <header class="flex justify-end" style="-webkit-app-region: drag;">
+    <header class="flex justify-end" style="-webkit-app-region: drag">
       <button id="saveChatButton"
-          class="shadow-md px-4 py-2 rounded-lg bg-gray-400 text-white hover:bg-amber-500 focus:outline-none mr-1 disabled:opacity-75 disabled:cursor-not-allowed dark:bg-zinc-900 dark:hover:bg-amber-500 fade-in delay-1 transition duration-500 ease-in-out">
+        class="shadow-md px-4 py-2 rounded-lg bg-gray-400 text-white hover:bg-amber-500 focus:outline-none mr-1 disabled:opacity-75 disabled:cursor-not-allowed dark:bg-zinc-900 dark:hover:bg-amber-500 fade-in delay-1 transition duration-500 ease-in-out">
         Save Chat
       </button>
 
@@ -64,17 +63,14 @@
       </button>
     </header>
 
-
     <main id="chatContainer"
       class="flex flex-col flex-grow max-w-full transition duration-500 ease-in-out rounded-3xl bg-zinc-100/30 dark:bg-zinc-900 shadow-2xl outline outline-zinc-100/30 dark:outline-zinc-900 backdrop-blur-sm overflow-y-auto pt-5 p-5 m-5 mt-10">
-
       <!-- Messages get added here by renderer.js file -->
-
     </main>
 
     <!-- Footer Section -->
     <footer class="text-center py-4 fade-in delay-4">
-      <div class=" px-4 pt-4 mb-2 sm:mb-0">
+      <div class="px-4 pt-4 mb-2 sm:mb-0">
         <div class="relative flex">
           <span class="absolute flex items-center">
             <button type="button" id="speechBtn"
@@ -88,9 +84,8 @@
             </button>
           </span>
           <input type="text" id="promptInput" placeholder="Write your message!"
-            class="w-full transition duration-500 ease-in-out focus:outline-none focus:placeholder-gray-400 text-gray-500 placeholder-gray-500 pl-12 bg-gray-200 dark:bg-zinc-900 dark:text-gray-200 rounded-lg py-3 shadow-xl">
+            class="w-full transition duration-500 ease-in-out focus:outline-none focus:placeholder-gray-400 text-gray-500 placeholder-gray-500 pl-12 bg-gray-200 dark:bg-zinc-900 dark:text-gray-200 rounded-lg py-3 shadow-xl" />
           <div class="absolute right-0 items-center inset-y-0 hidden sm:flex">
-
             <button type="button" id="generateBtn"
               class="inline-flex items-center justify-center px-4 py-3 transition duration-500 ease-in-out text-zinc-700 dark:text-gray-200 bg-gray-200 dark:bg-zinc-900 dark:hover:bg-amber-500 hover:bg-amber-500 focus:outline-none">
               <span class="font-semibold">Send</span>
@@ -103,19 +98,19 @@
             </button>
 
             <button type="button" id="stopBtn" disabled
-              class="inline-flex items-center justify-center rounded-e-lg px-4 py-3  text-white bg-red-500 hover:bg-red-600 hover:border-transparent transition ease-in duration-200 transform hover:-translate-y-1 active:translate-y-0 disabled:opacity-75 disabled:cursor-not-allowed">
+              class="inline-flex items-center justify-center rounded-e-lg px-4 py-3 text-white bg-red-500 hover:bg-red-600 hover:border-transparent transition ease-in duration-200 transform hover:-translate-y-1 active:translate-y-0 disabled:opacity-75 disabled:cursor-not-allowed">
               Stop
             </button>
-
           </div>
         </div>
       </div>
     </footer>
     <!-- Footer Section Ends-->
   </div>
+
+  <!-- Your Electron scripts here -->
+  <script src="renderer.js" defer></script>
+  <script src="resources/libs/anime.min.js" defer></script>
 </body>
 
-<!-- Your Electron scripts here -->
-<script src="renderer.js" defer></script>
-<script src="resources/libs/anime.min.js" defer></script>
 </html>

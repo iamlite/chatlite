@@ -29,7 +29,6 @@ document.getElementById('saveChatButton').addEventListener('click', () => {
   ipcRenderer.send('save-chat-history');
 });
 
-
 // Event listeners
 domElements.promptInput.addEventListener('keyup', event => { if (event.key === 'Enter') { generate() } })
 domElements.generateBtn.addEventListener('click', generate)
@@ -41,4 +40,14 @@ domElements.clearButton.addEventListener('click', () => {
 
   // Clear the chat history in the Electron Store
   ipcRenderer.send("clear-chat-history");
+});
+
+// Dark mode toggle button
+domElements.darkModeToggle.addEventListener('click', () => {
+  ipcRenderer.send('toggle-dark-mode');
+});
+
+// Listen for theme updates
+ipcRenderer.on('theme-updated', (event, theme) => {
+  document.documentElement.className = theme;
 });
