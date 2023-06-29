@@ -1,25 +1,15 @@
-const Electron = require("electron");
-const Store = require("electron-store");
+const { ipcRenderer } = require("electron");
 const { handleError, getElementById, populateSettingsFields } = require('./modules/helperFunctions');
 const fs = require('fs');
 const path = require('path');
 
-let ipcRenderer, store;
-
-// Initialize ipcRenderer and store
-ipcRenderer = Electron.ipcRenderer;
-store = new Store();
-
-// Check the dark mode setting and apply it
-const shouldUseDarkColors = store.get('darkMode', false);
-document.documentElement.classList.toggle('dark', shouldUseDarkColors);
 
 // Send a request to retrieve the stored settings from the main process
 ipcRenderer.send('retrieve-settings');
 
 // Listen for the retrieved settings
 ipcRenderer.on('retrieve-settings-response', (event, settings) => {
-  // Default settings
+  // Check if the settings exist
   const defaultSettings = {
     apiKey: 'sk-youropenaiapikeygoeshere',
     endpointUrl: 'https://api.openai.com/v1/chat/completions',
@@ -58,28 +48,35 @@ if (saveButton) {
       return acc;
     }, {});
 
+    // Log the settings object to the console
+    console.log(settings);
+
     // Send the settings to the main process for storage
     ipcRenderer.send('save-settings', settings);
+
+    // Close the settings window
+    window.close();
   });
 }
 
 const promptsPath = path.join(__dirname, './resources/prompts.json');
 const prompts = JSON.parse(fs.readFileSync(promptsPath, 'utf8'));
 
-const promptsSelect = getElementById('premadePrompts');
+const premadePromptsSelect = getElementById('premadePrompts');
 prompts.forEach(prompt => {
   const option = document.createElement('option');
   option.value = prompt.content;
   option.text = prompt.title;
-  promptsSelect.appendChild(option);
+  premadePromptsSelect.appendChild(option);
 });
 
-promptsSelect.addEventListener('change', () => {
+premadePromptsSelect.addEventListener('change', () => {
   const initialPromptTextarea = getElementById('initialPrompt');
-  initialPromptTextarea.value = promptsSelect.value;
+  initialPromptTextarea.value = premadePromptsSelect.value;
 });
+
 
 module.exports = {
   saveButton,
-  promptsSelect,
+  premadePromptsSelect,
 };

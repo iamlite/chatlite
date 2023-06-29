@@ -42,4 +42,3 @@ domElements.clearButton.addEventListener('click', () => {
   // Clear the chat history in the Electron Store
   ipcRenderer.send("clear-chat-history");
 });
-
