@@ -143,8 +143,6 @@ const promiseResults = await Promise.allSettled(
   })
 );
 
-
-
     // check for errors and handle them accordingly
     promiseResults.forEach((result, idx) => {
       if (result.status === "rejected") {
