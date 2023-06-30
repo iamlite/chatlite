@@ -53,10 +53,9 @@ const appendMessage = (message, sender, isLoadingFromHistory = false) => {
   Prism.highlightAllUnder(textDiv);
 
 
-  if (sender === 'ai' && !isLoadingFromHistory) {
+  if (sender === 'ai' && !isLoadingFromHistory && message !== "Request aborted.") {
     addLoadingAnimation(avatarDiv);
   }
-
 
   // Add footer
   const footerDiv = createElement('div', 'chat-footer pt-2 opacity-50', bubbleDiv)

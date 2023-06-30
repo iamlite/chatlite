@@ -181,8 +181,14 @@ const promiseResults = await Promise.allSettled(
     await readStreamData();
   } catch (error) {
     if (controller && controller.signal.aborted) {
-      const errorMessageDiv = appendMessage("Request aborted.", "error");
-      errorMessageDiv.classList.add("chat-bubble", "error");
+      // Remove the loading animation from the last AI avatar div
+      if (lastAIMessageDiv) {
+        const avatarDiv = lastAIMessageDiv.querySelector(".chat-avatar");
+        removeLoadingAnimation(avatarDiv);
+      }
+
+      // Append a "Request aborted." message as an AI response
+      appendMessage("Request aborted.", "ai");
     } else {
       handleError(error, "Error occurred while generating.");
     }
@@ -200,12 +206,12 @@ const sendMessageToAPI = async (message) => {
   console.log('Sending message to API');
   domElements.generateBtn.disabled = true;
   domElements.stopBtn.disabled = false;
-  const controller = new AbortController();
+  domElements.controller = new AbortController(); // Store the AbortController instance in domElements.controller
 
   try {
     console.log('Fetching API');
-    const response = await fetchApi(settings, chatHistory, controller);
-    await processAPIResponse(response, controller);
+    const response = await fetchApi(settings, chatHistory, domElements.controller);
+    await processAPIResponse(response, domElements.controller);
   } catch (error) {
     console.error('Error occurred while generating:', error);
     handleError(error, "Error occurred while generating.");
@@ -215,6 +221,7 @@ const sendMessageToAPI = async (message) => {
     domElements.stopBtn.disabled = true;
   }
 };
+
 
 // Export the functions and variables for external usage
 module.exports = {
