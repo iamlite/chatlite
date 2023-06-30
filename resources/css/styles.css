@@ -2,9 +2,6 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-body {
-  -webkit-app-region: drag;
-}
 
 input[type="text"] {
   border: none;

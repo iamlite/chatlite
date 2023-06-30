@@ -28,6 +28,15 @@ function createWindow() {
 
   mainWindow.loadFile('index.html');
 
+  // Focus on promptInput when the window is ready to show
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+    mainWindow.webContents.executeJavaScript(`
+      const promptInput = document.getElementById('promptInput');
+      promptInput.focus();
+    `);
+  });
+
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.webContents.send('theme-updated', getSystemTheme());
   });

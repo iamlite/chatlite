@@ -6,23 +6,16 @@ const createElement = (elementType, className, parentElement) => {
 };
 
 const handleError = (error, message, severity = 'error') => {
-    switch (severity) {
-      case 'warn':
-        console.warn("Warning:", error);
-        break;
-      case 'info':
-        console.info("Info:", error);
-        break;
-      case 'error':
-      default:
-        console.error("Error:", error);
-        break;
-    }
-    renderMessage(message, severity);
-  
-    // Display an error message to the user
-    alert(`An error occurred: ${message}`);
-  };
+  const logFunction = {
+    warn: console.warn,
+    info: console.info,
+    error: console.error,
+  }[severity] || console.error;
+
+  logFunction(`${severity.charAt(0).toUpperCase() + severity.slice(1)}:`, error);
+  renderMessage(message, severity);
+  alert(`An error occurred: ${message}`);
+};
 
 // Helper function to retrieve DOM elements by ID
 const getElementById = (id) => document.getElementById(id);
@@ -56,7 +49,7 @@ const addLoadingAnimation = (avatarDiv) => {
 const removeLoadingAnimation = (avatarDiv) => {
   const loadingSpan = avatarDiv.querySelector('.loading');
   if (loadingSpan) {
-    avatarDiv.removeChild(loadingSpan);
+    loadingSpan.remove();
     console.log('Loading animation removed');
   }
 }
