@@ -21,8 +21,9 @@ function createWindow() {
     icon: path.resolve(__dirname, 'resources', 'img', 'icon.icns'),
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
       enableRemoteModule: false,
+      preload: path.join(__dirname, '..', 'preload.js'),
     },
   });
 

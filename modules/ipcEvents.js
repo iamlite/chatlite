@@ -85,6 +85,20 @@ ipcMain.on('save-chat-history', async (event) => {
   } else {
     console.log('Save dialog cancelled by the user');
   }
+  
 });
+ipcMain.handle('dark-mode:toggle', () => {
+  if (nativeTheme.shouldUseDarkColors) {
+    nativeTheme.themeSource = 'light';
+  } else {
+    nativeTheme.themeSource = 'dark';
+  }
+  return nativeTheme.shouldUseDarkColors;
+});
+
+ipcMain.handle('dark-mode:system', () => {
+  nativeTheme.themeSource = 'system';
+});
+
 
 module.exports = ipcMain;

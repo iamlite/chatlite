@@ -1,6 +1,6 @@
 // Required modules
 const os = require('os')
-const { ipcRenderer, clipboard } = require('electron')
+const ipcRenderer = window.electron;
 
 // Custom modules
 const domElements = require('./modules/domElements')
@@ -38,11 +38,28 @@ domElements.promptInput.addEventListener('keydown', event => {
 
 domElements.generateBtn.addEventListener('click', generate)
 domElements.stopBtn.addEventListener('click', stop)
-domElements.settingsButton.addEventListener('click', () => ipcRenderer.invoke('open-settings-window') )
+domElements.settingsButton.addEventListener('click', () => window.electron.openSettingsWindow());
 domElements.clearButton.addEventListener('click', () => {
   domElements.chatContainer.innerHTML = '';
   messages = [];
 
   // Clear the chat history in the Electron Store
   ipcRenderer.send("clear-chat-history");
+});
+
+document.getElementById('darkModeToggle').addEventListener('click', () => {
+  const darkModeOn = window.electron.toggleDarkMode();
+  if (darkModeOn) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (window.electron.useSystemTheme()) {
+    document.documentElement.className = 'dark';
+  } else {
+    document.documentElement.className = 'light';
+  }
 });

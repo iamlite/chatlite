@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, nativeTheme, clipboard } = require('electron');
+const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron');
 const Store = require('electron-store');
 const path = require('path');
 const { createWindow, createSettingsWindow } = require('./modules/windowManager');
