@@ -3,7 +3,7 @@ const Store = require('electron-store');
 const path = require('path');
 const { createWindow, createSettingsWindow } = require('./modules/windowManager');
 const ipcEvents = require('./modules/ipcEvents');
-const { toggleTheme } = require('./modules/darkMode');
+
 
 const store = new Store();
 
@@ -24,11 +24,4 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
-});
-
-ipcMain.on('toggle-dark-mode', (event) => {
-  const newTheme = toggleTheme();
-  BrowserWindow.getAllWindows().forEach(win => {
-    win.webContents.send('theme-updated', newTheme);
-  });
 });

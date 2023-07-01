@@ -4,7 +4,6 @@ const { ipcRenderer, clipboard } = require('electron')
 
 // Custom modules
 const domElements = require('./modules/domElements')
-const darkMode = require('./modules/darkMode')
 const createElement = require('./modules/helperFunctions')
 const { renderMessage, appendMessage, generate, stop } = require('./modules/chatHandler')
 const { getSettings, fetchApi, processAPIResponse, sendMessageToAPI } = require('./modules/apiHandler')
@@ -46,23 +45,4 @@ domElements.clearButton.addEventListener('click', () => {
 
   // Clear the chat history in the Electron Store
   ipcRenderer.send("clear-chat-history");
-});
-
-// Dark mode toggle button
-domElements.darkModeToggle.addEventListener('click', () => {
-  ipcRenderer.send('toggle-dark-mode');
-});
-
-// Listen for theme updates
-ipcRenderer.on('theme-updated', (event, theme) => {
-  document.documentElement.className = theme;
-  
-  // Show the correct icon based on the theme
-  if (theme === 'dark') {
-    domElements.lightModeIcon.style.display = 'none';
-    domElements.darkModeIcon.style.display = 'block';
-  } else {
-    domElements.lightModeIcon.style.display = 'block';
-    domElements.darkModeIcon.style.display = 'none';
-  }
 });
