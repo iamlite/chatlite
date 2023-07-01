@@ -30,8 +30,8 @@ const appendMessage = (message, sender, isLoadingFromHistory = false) => {
   // Add image
   const avatarDiv = createElement('div', 'chat-image avatar relative', bubbleDiv)
   const avatarImgDiv = createElement('div', 'w-10 h-10 rounded-full overflow-hidden', avatarDiv)
-  avatarImgDiv.style.width = '50px'
-  avatarImgDiv.style.height = '50px'
+  avatarImgDiv.style.width = '40px'
+  avatarImgDiv.style.height = '40px'
   const avatarImg = createElement('img', 'object-cover w-full h-full', avatarImgDiv)
   avatarImg.src = sender === 'ai' ? 'Resources/img/sysavatar.png' : 'resources/img/useravatar.png'
 
@@ -79,9 +79,14 @@ const stop = () => {
   if (domElements.controller) {
     domElements.controller.abort()
     domElements.controller = null
+
+    // Select the avatar div with the loading animation
+    const avatarDivWithLoadingAnimation = document.querySelector(".chat-image.avatar .loading.loading-infinity.loading-md").parentNode;
+
+    // Remove the loading animation from the avatar div
+    removeLoadingAnimation(avatarDivWithLoadingAnimation);
   }
 }
-
 
 // Generate the chat response
 const generate = async () => {

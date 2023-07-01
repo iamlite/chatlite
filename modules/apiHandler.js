@@ -176,19 +176,13 @@ const promiseResults = await Promise.allSettled(
   removeLoadingAnimation(lastAIMessageDiv.querySelector(".chat-image"));
 };
 
-  // Start reading the data stream
+ // Start reading the data stream
   try {
     await readStreamData();
   } catch (error) {
     if (controller && controller.signal.aborted) {
-      // Remove the loading animation from the last AI avatar div
-      if (lastAIMessageDiv) {
-        const avatarDiv = lastAIMessageDiv.querySelector(".chat-avatar");
-        removeLoadingAnimation(avatarDiv);
-      }
-
       // Append a "Request aborted." message as an AI response
-      appendMessage("Request aborted.", "ai");
+      appendMessage("Request aborted.", "ai", true);
     } else {
       handleError(error, "Error occurred while generating.");
     }

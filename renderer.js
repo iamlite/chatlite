@@ -30,7 +30,13 @@ document.getElementById('saveChatButton').addEventListener('click', () => {
 });
 
 // Event listeners
-domElements.promptInput.addEventListener('keyup', event => { if (event.key === 'Enter') { generate() } })
+domElements.promptInput.addEventListener('keydown', event => {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault(); // Prevent the default Enter behavior (submitting a form or creating a new line)
+    generate();
+  }
+});
+
 domElements.generateBtn.addEventListener('click', generate)
 domElements.stopBtn.addEventListener('click', stop)
 domElements.settingsButton.addEventListener('click', () => ipcRenderer.invoke('open-settings-window') )
