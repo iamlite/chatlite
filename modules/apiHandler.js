@@ -7,6 +7,7 @@ const MarkdownIt = require('markdown-it');
 const DOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 
+
 // Create a new JSDOM instance
 const window = new JSDOM('').window;
 const DOMPurifyInstance = DOMPurify(window);
@@ -71,8 +72,8 @@ const fetchApi = async (settings, messages, controller) => {
 };
 
 // Process the API response and render AI responses in the chat container
-const processAPIResponse = async (response, controller) => {
-  if (!response.ok) {
+const processAPIResponse = async (response, controller, chatContainer) => {
+    if (!response.ok) {
     handleError("API error:", response.statusText);
     return;
   }
@@ -99,8 +100,8 @@ const processAPIResponse = async (response, controller) => {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
     aiResponse += response; // Accumulate the AI's response
+  };
 
-    };
     
 // Read the data stream and process AI responses
 const readStreamData = async () => {
@@ -193,7 +194,7 @@ const promiseResults = await Promise.allSettled(
 };
 
 // Send message to OpenAI API
-const sendMessageToAPI = async (message) => {
+const sendMessageToAPI = async (message, chatContainer) => {
   const settings = await getSettings();
   const chatHistory = await getChatHistory(); // Retrieve the chat history
 
@@ -205,7 +206,7 @@ const sendMessageToAPI = async (message) => {
   try {
     console.log('Fetching API');
     const response = await fetchApi(settings, chatHistory, domElements.controller);
-    await processAPIResponse(response, domElements.controller);
+    await processAPIResponse(response, domElements.controller, chatContainer);
   } catch (error) {
     console.error('Error occurred while generating:', error);
     handleError(error, "Error occurred while generating.");
@@ -215,6 +216,7 @@ const sendMessageToAPI = async (message) => {
     domElements.stopBtn.disabled = true;
   }
 };
+
 
 
 // Export the functions and variables for external usage

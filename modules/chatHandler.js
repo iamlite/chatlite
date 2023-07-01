@@ -15,13 +15,12 @@ const md = new MarkdownIt();
 
 
 // Render a message in the chat container
-const renderMessage = (content, sender, isLoadingFromHistory = false) => {
+const renderMessage = (content, sender, isLoadingFromHistory = false, chatContainer) => {
   const messageDiv = appendMessage(content, sender, isLoadingFromHistory)
   messageDiv.classList.add('fade-in')
-  domElements.chatContainer.appendChild(messageDiv)
-  domElements.chatContainer.scrollTop = domElements.chatContainer.scrollHeight
+  chatContainer.appendChild(messageDiv)
+  chatContainer.scrollTop = chatContainer.scrollHeight
 }
-
 
 // Append a chat message to the chat container
 const appendMessage = (message, sender, isLoadingFromHistory = false) => {

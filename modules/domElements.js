@@ -9,4 +9,5 @@ const domElements = {
     clearButton: document.getElementById('clearButton'),
     settingsButton: document.getElementById('settingsButton')
 };
+
 module.exports = domElements;
